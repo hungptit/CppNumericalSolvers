@@ -1,5 +1,4 @@
 CppOptimizationLibrary (A header-only C++17 optimization library)
-=================================================================
 
 [![Build Status](https://ci.patwie.com/api/badges/PatWie/CppNumericalSolvers/status.svg?ref=refs/heads/v2)](https://ci.patwie.com/PatWie/CppNumericalSolvers)
 
