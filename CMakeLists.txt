@@ -8,7 +8,6 @@ endif()
 
 set(POSITION_INDEPENDENT_CODE ON)
 
-set(CMAKE_INSTALL_PREFIX "$ENV{HOME}")
 set(ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 set(EXTERNAL_DIR "${ROOT_DIR}/3p")
 set(SRC_DIR "${ROOT_DIR}/src")
@@ -21,7 +20,6 @@ get_git_version(GIT_VERSION)
 
 # Tell the user what versions we are using
 string(REGEX MATCH "[0-9]+\\.[0-9]+\\.[0-9]+" VERSION ${GIT_VERSION})
-message("-- Version: ${VERSION}")
 
 # The version of the libraries
 set(GENERIC_LIB_VERSION ${VERSION})
@@ -68,14 +66,15 @@ include_directories("${EXTERNAL_DIR}/include")
 include_directories("${EXTERNAL_DIR}/include/eigen3")
 include_directories("include")
 
-message("${EXTERNAL_DIR}/include/eigen3")
-
 # Add libraries
 find_library(LIB_FMT libfmt.a "${EXTERNAL_DIR}/lib" NO_DEFAULT_PATH)
 
 # Add sub-directories
 add_subdirectory(examples)
 add_subdirectory(unittests)
+
+# Instalation options
+install(DIRECTORY include DESTINATION "include/cppoptlib")
 
 # Formating and linting all related files
 file(GLOB_RECURSE SRCS_AND_HDRS *.cpp *.h)
