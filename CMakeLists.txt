@@ -143,7 +143,7 @@ endif()
 add_custom_target(
   format
   DEPENDS .fmt_bash_stamp .fmt_cpp_stamp .fmt_cmake_stamp
-  COMMENT "Format Bash, C++, CMake, and Python files.")
+  COMMENT "Format Bash, C++, and CMake files.")
 
 add_custom_command(
   OUTPUT .lint_shellcheck_stamp
