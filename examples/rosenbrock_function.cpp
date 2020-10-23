@@ -6,7 +6,6 @@
 #include <vector>
 
 #include "Eigen/Core"
-#include "fmt/core.h"
 #include "function.h"
 #include "solver/bfgs.h"
 #include "solver/conjugated_gradient_descent.h"
@@ -32,31 +31,30 @@ struct Rosenbrock : public FunctionXd {
 };
 
 template <typename Solver>
-auto solve(const std::vector<double>& values) {
+void solve(const std::vector<double>& values) {
   Rosenbrock f;
   Rosenbrock::vector_t x(2);
   x << values[0], values[1];
 
   auto state = f.Eval(x);
 
-  fmt::print("f(x): {}\n", f(x));
-  fmt::print("gradient:");
-  std::cout << state.gradient << "\n";
-  fmt::print("hessian:");
-  std::cout << state.hessian << "\n";
-
-  fmt::print("cppoptlib::utils::IsGradientCorrect(f, x): {:b}\n",
-             cppoptlib::utils::IsGradientCorrect(f, x));
-  fmt::print("cppoptlib::utils::IsHessianCorrect(f, x): {}",
-             cppoptlib::utils::IsHessianCorrect(f, x));
+  std::cout << "f(x): " << f(x) << "\n"
+            << "gradient: " << state.gradient << "\n"
+            << "hessian: " << state.hessian << "\n"
+            << "cppoptlib::utils::IsGradientCorrect(f, x): "
+            << cppoptlib::utils::IsGradientCorrect(f, x) << "\n"
+            << "cppoptlib::utils::IsHessianCorrect(f, x): "
+            << cppoptlib::utils::IsHessianCorrect(f, x) << "\n";
 
   Solver solver;
-
-  return solver.Minimize(f, x);
+  const auto [sol, final_state] = solver.Minimize(f, x);
+  std::cout << "Solver status: " << final_state.status << "\n";
+  std::cout << "Solution: " << sol.x.transpose() << "\n";
 }
 
 int main(int argc, char* argv[]) {
   if (argc < 2) {
+    std::cerr << "Need to provide the solver id (0-5).";
     return EXIT_FAILURE;
   }
   const uint32_t solver_id = std::atol(argv[1]);
@@ -74,52 +72,46 @@ int main(int argc, char* argv[]) {
     case NEWTON_DESCENT: {
       std::cout << "NewtonDescent\n";
       using Solver = cppoptlib::solver::NewtonDescent<Rosenbrock>;
-      const auto& [sol, state] = solve<Solver>(x);
-      std::cout << "Solution: " << sol.x;
+      solve<Solver>(x);
       break;
     }
     case GRADIENT_DESCENT: {
       std::cout << "GradientDescent\n";
       using Solver = cppoptlib::solver::GradientDescent<Rosenbrock>;
-      const auto& [sol, state] = solve<Solver>(x);
-      std::cout << "Solution: " << sol.x;
+      solve<Solver>(x);
       break;
     }
 
     case CONJUGATE_GRADIENT_DESCENT: {
       std::cout << "ConjugatedGradientDescent\n";
       using Solver = cppoptlib::solver::ConjugatedGradientDescent<Rosenbrock>;
-      const auto& [sol, state] = solve<Solver>(x);
-      std::cout << "Solution: " << sol.x.transpose();
+      solve<Solver>(x);
       break;
     }
 
     case BFGS: {
       std::cout << "Bfgs\n";
       using Solver = cppoptlib::solver::Bfgs<Rosenbrock>;
-      const auto& [sol, state] = solve<Solver>(x);
-      std::cout << "Solution: " << sol.x.transpose();
+      solve<Solver>(x);
       break;
     }
 
     case L_BFGS: {
       std::cout << "Lbfgs\n";
       using Solver = cppoptlib::solver::Lbfgs<Rosenbrock>;
-      const auto& [sol, state] = solve<Solver>(x);
-      std::cout << "Solution: " << sol.x.transpose();
+      solve<Solver>(x);
       break;
     }
 
     case L_BFGS_B: {
       std::cout << "Lbfgsb\n";
       using Solver = cppoptlib::solver::Lbfgsb<Rosenbrock>;
-      const auto& [sol, state] = solve<Solver>(x);
-      std::cout << "Solution: " << sol.x.transpose();
+      solve<Solver>(x);
       break;
     }
 
     default:
-      std::cerr << "Invalid solver id\n";
+      std::cerr << "The solver id must be between 0-5\n";
       break;
   }
 

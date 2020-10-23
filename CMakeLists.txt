@@ -13,6 +13,8 @@ set(EXTERNAL_DIR "${ROOT_DIR}/3p")
 set(SRC_DIR "${ROOT_DIR}/src")
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+list(APPEND CMAKE_MODULE_PATH
+     "${CMAKE_CURRENT_SOURCE_DIR}/3p/src/cmake-scripts")
 
 # Read the git tags to determine the project version
 include(GetGitVersion)
@@ -28,6 +30,10 @@ string(SUBSTRING ${VERSION} 0 1 GENERIC_LIB_SOVERSION)
 include(CheckCXXCompilerFlag)
 include(AddCXXCompilerFlag)
 include(CXXFeatureCheck)
+
+# Code coverage
+include(code-coverage)
+add_code_coverage_all_targets(EXCLUDE 3p/* unittests/solver_basic_tests.cpp)
 
 # Enable other flags
 add_cxx_compiler_flag(-std=c++17)
@@ -140,7 +146,7 @@ else()
 endif()
 
 add_custom_target(
-  format
+  fmt
   DEPENDS .fmt_bash_stamp .fmt_cpp_stamp .fmt_cmake_stamp
   COMMENT "Format Bash, C++, and CMake files.")
 

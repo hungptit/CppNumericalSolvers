@@ -72,7 +72,7 @@ class Lbfgs : public Solver<function_t> {
     // r <- H_k^0*q
     search_direction = scaling_factor_ * search_direction;
     // for i k − m, k − m + 1, . . . , k − 1
-    for (int i = 0; i < k; i++) {
+    for (int i = 0; i < k; ++i) {
       // beta <- rho_i * y_i^T * r
       const scalar_t rho =
           1.0 / x_diff_memory_.col(i).dot(grad_diff_memory_.col(i));
