@@ -40,7 +40,7 @@ void ComputeFiniteGradient(const function_t& function,
   const int innerSteps = 2 * (accuracy + 1);
   const scalar_t ddVal = dd[accuracy] * eps;
 
-  for (index_t d = 0; d < x0.rows(); d++) {
+  for (index_t d = 0; d < x0.rows(); ++d) {
     (*grad)[d] = 0;
     for (int s = 0; s < innerSteps; ++s) {
       scalar_t tmp = x[d];
@@ -68,8 +68,8 @@ void ComputeFiniteHessian(const function_t& function,
   vector_t& x = const_cast<vector_t&>(x0);
 
   if (accuracy == 0) {
-    for (index_t i = 0; i < x0.rows(); i++) {
-      for (index_t j = 0; j < x0.rows(); j++) {
+    for (index_t i = 0; i < x0.rows(); ++i) {
+      for (index_t j = 0; j < x0.rows(); ++j) {
         scalar_t tmpi = x[i];
         scalar_t tmpj = x[j];
 
@@ -98,8 +98,8 @@ void ComputeFiniteHessian(const function_t& function,
           74(f_{-1,-1}+f_{1,1}-f_{1,-1}-f_{-1,1})
       \end{matrix}\right] }
     */
-    for (index_t i = 0; i < x0.rows(); i++) {
-      for (index_t j = 0; j < x0.rows(); j++) {
+    for (index_t i = 0; i < x0.rows(); ++i) {
+      for (index_t j = 0; j < x0.rows(); ++j) {
         scalar_t tmpi = x[i];
         scalar_t tmpj = x[j];
 

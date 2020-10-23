@@ -109,7 +109,7 @@ class MoreThuente {
       x = wa + stp * s;
       f = function(x);
       function.Gradient(x, &g);
-      nfev++;
+      ++nfev;
       scalar_t dg = g.dot(s);
       scalar_t ftest1 = finit + stp * dgtest;
 

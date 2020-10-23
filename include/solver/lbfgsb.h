@@ -135,7 +135,7 @@ class Lbfgsb : public Solver<function_t> {
     // the feasible set is implicitly given by "set_of_t - {t_i==0}"
     vector_t d = -current.gradient;
     // n operations
-    for (int j = 0; j < dim_; j++) {
+    for (int j = 0; j < dim_; ++j) {
       if (current.gradient(j) == 0) {
         set_of_t.push_back(std::make_pair(j, max_value));
       } else {
@@ -172,7 +172,7 @@ class Lbfgsb : public Solver<function_t> {
     scalar_t t_old = 0;
     // b :=     argmin {t_i , t_i >0}
     int i = 0;
-    for (int j = 0; j < dim_; j++) {
+    for (int j = 0; j < dim_; ++j) {
       i = j;
       if (set_of_t[sorted_indices[j]].second > 0) break;
     }
@@ -234,7 +234,7 @@ class Lbfgsb : public Solver<function_t> {
     const unsigned int n = free_variables.size();
     assert(du.rows() == n);
 
-    for (unsigned int i = 0; i < n; i++) {
+    for (unsigned int i = 0; i < n; ++i) {
       if (du(i) > 0) {
         alphastar = std::min<scalar_t>(
             alphastar,
@@ -258,7 +258,7 @@ class Lbfgsb : public Solver<function_t> {
     const scalar_t theta_inverse = 1 / theta_;
 
     std::vector<int> free_variables_index;
-    for (int i = 0; i < x_cauchy.rows(); i++) {
+    for (int i = 0; i < x_cauchy.rows(); ++i) {
       if ((x_cauchy(i) != upper_bound(i)) && (x_cauchy(i) != lower_bound(i))) {
         free_variables_index.push_back(i);
       }
@@ -293,7 +293,7 @@ class Lbfgsb : public Solver<function_t> {
     // STEP: 8
     dyn_vector_t dStar = alpha_star * du;
     vector_t subspace_min = x_cauchy.eval();
-    for (int i = 0; i < free_var_count; i++) {
+    for (int i = 0; i < free_var_count; ++i) {
       subspace_min(free_variables_index[i]) =
           subspace_min(free_variables_index[i]) + dStar(i);
     }

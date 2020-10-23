@@ -56,6 +56,7 @@ TEST_CASE("NewtonDescent") {
     const std::vector<double> x{-100, 4};
     const auto& [sol, state] = solve<Solver>(x);
     CHECK_EQ(cppoptlib::solver::Status::XDeltaViolation, state.status);
+    std::cout << "Solver status: " << state.status << "\n";
   }
 
   SUBCASE("Converge") {
@@ -67,6 +68,7 @@ TEST_CASE("NewtonDescent") {
     constexpr double epsilon = 1e-6;
     auto relerr = (results - sol.x).norm() / results.norm();
     CHECK(relerr == doctest::Approx(0.0).epsilon(epsilon));
+    std::cout << "Solver status: " << state.status << "\n";
   }
 }
 

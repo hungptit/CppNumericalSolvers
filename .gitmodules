@@ -14,3 +14,7 @@
 	path = 3p/src/fmt
 	url = https://github.com/fmtlib/fmt.git
 	branch = master
+[submodule "3p/src/cmake-scripts"]
+	path = 3p/src/cmake-scripts
+	url = https://github.com/StableCoder/cmake-scripts.git
+	branch = master
